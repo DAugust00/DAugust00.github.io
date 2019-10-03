@@ -1,0 +1,786 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    
+    <title>PTTM: Pokemon Type Team Maker</title>
+    
+    <style>
+      html {
+        font-family: cursive;
+      }
+      body {
+        width: 50%;
+        max-width: 800px;
+        min-width: 480px;
+        margin: 0 auto;
+      }
+      .lastResult {
+        color: white;
+        padding: 2px;
+      }
+      
+      div {
+        background-color: #ffbf00;
+        border-radius: 25px;
+        padding: 20px; 
+        width: 500px;
+        height: 15 px;
+      }
+    </style>
+  </head>
+  
+  <body>
+    
+    <body style="background-color:red;">
+    <h1>Pokemon Type Team Generator</h1>
+    <br>
+    <p>This is the Pokemon Type Team Generator. You press a button, I make a list of types of Pokemon that you can use to make a Super-Effective team.</p>
+    <p href="">F.A.Q.</p>
+    <button type="button" onclick="makeATeamSupEff()">Make a team by Super-effective types</button>
+    <br>
+    <button type="button" onclick="makeATeamRes()">Make a team by Defence(Resistence)</button>
+    <br>
+    <button type="button" onclick="makeATeamSupEffPreGen6()">Make a team by Super-effective types Pre-Gen 6</button>
+    <br>
+    <button type="button" onclick="makeATeamResPreGen6()">Make a team by Defence(Resistence) Pre-Gen 6</button>
+    <br>
+    <br>
+    <br>
+    <div>
+      <p id= "teamParagraph"></p>
+    </div>
+    <script>
+      
+      /*var types = ["fighting","flying","poison","ground","rock","bug","ghost","steel","fire","water","grass","electric","psychic","ice","dragon","dark","fairy","normal"]; Here is a list so that we dont have to do it another time.*/
+      
+      
+      
+      function makeATeamSupEff() {
+      
+        var r_list = ["fighting","flying","ground","bug","ghost","water","grass","psychic","dragon","fairy"];
+        
+        
+        var team = [];
+      
+        var fighting = {
+          SupEff : ["dark","ice","normal","rock","steel"],
+          Res : ["bug","dark","rock"],
+          tName : "fighting"
+        };
+        
+        var ground = {
+          SupEff : ["electric","rock","fire","poison","steel"],
+          Res : ["poison","rock","electric"],
+          tName : "ground"
+        };
+        
+        var flying = {
+          SupEff : ["bug","fighting","grass"],
+          Res : ["bug","fighting","grass","ground"],
+          tName : "flying"
+        };
+        
+        var fire = {
+          SupEff :["grass","bug","steel","ice"],
+          Res : ["bug","fairy","fire","grass","ice","steel"],
+          tName : "fire"
+        };
+        
+        var water = {
+          SupEff :["ground","fire","rock"],
+          Res : ["fire","ice","steel","water"],
+          tName : "water"
+        };
+        
+        var grass = {
+          SupEff :["ground","rock","water"],
+          Res : ["electric","grass","ground","water"],
+          tName : "grass"
+        };
+        
+        var poison = {
+          SupEff :["grass","fairy"],
+          Res : ["fighting","grass","fairy","poison","bug"],
+          tName : "poison"
+        };
+        
+        var electric = {
+          SupEff :["flying","water"],
+          Res : ["electric","flying","steel"],
+          tName : "electric"
+        };
+        
+        var psychic = {
+          SupEff :["poison","fighting"],
+          Res : ["psychic","fighting"],
+          tName : "psychic"
+        };
+        
+        var rock = {
+          SupEff :["bug","fire","flying","ice"],
+          Res : ["fire","flying","normal","poison"],
+          tName : "rock"
+        };
+           
+        var ice = {
+          SupEff :["dragon","flying","grass","ground"],
+          Res : ["ice"],
+          tName : "ice"
+        };
+           
+        var bug = {
+          SupEff :["dark","grass","psychic"],
+          Res : ["fight","grass","ground"],
+          tName : "bug"
+        };
+           
+        var dragon = {
+          SupEff :["dragon"],
+          Res : ["electric","fire","grass","water"],
+          tName : "dragon"
+        };
+         
+        var ghost = {
+          SupEff :["ghost","psychic"],
+          Res : ["bug","poison","normal","fighting"],
+          tName : "ghost"
+        };
+            
+        var dark = {
+          SupEff :["ghost","psychic"],
+          Res : ["dark","ghost","psychic"],
+          tName : "dark"
+        };
+            
+        var steel = {
+          SupEff :["fairy","ice","rock"],
+          Res : ["bug","dragon","fairy","flying","ice","grass","normal","psychic","steel","rock","poison"],
+          tName : "steel"
+        };
+        
+        var fairy = {
+          SupEff :["dark","dragon","fighting"],
+          Res : ["bug","dark","fighting","dragon"],
+          tName : "fairy"
+        };
+        
+        var types = [flying,poison,rock,bug,ghost,steel,fire,water,grass,electric,psychic,ice,dragon,dark,fairy];
+        
+                /*
+                These are the lists that I'll use to make the functions.
+                Every var has 2 lists inside: one for super effective moves(the first one) and the other one for resistances(the second one).
+                */ 
+            
+        /* So now I'm going to change my initial approach to all of this. Im going to approach the problem by using the list of types and indexOf(). 
+        I'll  make the function check the types and, one per one, take them and put them in the "types" and "not_again" lists by using a normal "for" loop.
+        Also, I don't think I'm doing for-in loops properly. I'll have to check them out more. I'm probably messing up in definitions.
+        
+        Change of plans. I think I'll have to go wuth the really noobie approach. By using pop and push. This language is bullshit.
+        */
+        
+        var out = []; //this list will contain the types that are 
+        
+        function shuffle(types) {
+          for (let i = types.length - 1; i > 0; i--) {
+            let j = Math.floor(Math.random() * (i + 1)); // random index from 0 to i
+            [types[i], types[j]] = [types[j], types[i]]; // swap elements
+          }
+        };
+        
+        
+        shuffle(types);
+        //alert("shuffled types = "+types);
+        
+        /* A problem I always encounter is trying to modify an already existing list instead of just creating a new one. 
+        I can solve the issue I have right now: 10.47 02/07/2019 by making a new list instead of trying to modify the already existing one.
+        I think Javascript is made that way. Everytime I try to find in-built functions that try to modify or "go back" in the program, I can't seem 
+        to find one.
+        When you go to Rome, do like the Romans.*/
+        
+        
+        
+        team.push("ground"); /*this two types must be in every team if we take in consideration the types table for SupEff.*/
+        team.push("fighting");
+        
+        //alert("r_list before while statement = "+ r_list);
+        
+        while (r_list.length != 0){
+          for (var e in types) {
+            var lenrlist = r_list.length;
+            console.log("team = "+ team);
+            console.log("r_list = "+r_list);
+            console.log("lenrlist = "+lenrlist);
+            var SupEffList = types[e].SupEff;
+            console.log("types[e].tName = "+types[e].tName);
+            console.log("SupEffList = "+SupEffList);
+            
+            for (var t in SupEffList) {
+              var tinSupEffList = SupEffList[t];
+              //var indexoftinr_list = r_list.indexOf(r_list[tinSupEffList]);
+              console.log("tinSupEffList = "+ tinSupEffList);
+              
+              if (r_list.includes(tinSupEffList) == true) {
+                //console.log("r_list.splice(r_list.indexOf(tinSupEffList),1) = " + r_list.splice(r_list.indexOf(tinSupEffList),1)); PAY ATTENTION this command actually deletes you items in the array EVEN THO YOU THOUGHT IT WAS JUST A MESSAGE ON THE CONSOLE
+                r_list.splice(r_list.indexOf(tinSupEffList),1);
+                console.log("r_list = "+r_list);
+              };
+            };
+            
+            
+            if (lenrlist != r_list.length){
+              team.push(types[e].tName);
+            };
+            
+            console.log("r_list = " + r_list);
+          };
+        };  
+        document.getElementById("teamParagraph").innerHTML = "Team: "+team;
+        console.log("the end");
+      };
+      
+      //learning javascript loops is like screaming more times than I'm willing to admit to FUCKING STOP YOU PIECE OF SHIT OF A LANGUAGE
+      
+      function makeATeamRes() {
+      
+        var r_list = ["fighting","flying","poison","ground","rock","bug","ghost","steel","fire","water","grass","electric","psychic","ice","dragon","dark","fairy","normal"];
+        
+        
+        var team = [];
+      
+        var fighting = {
+          SupEff : ["dark","ice","normal","rock","steel"],
+          Res : ["bug","dark","rock"],
+          tName : "fighting"
+        };
+        
+        var ground = {
+          SupEff : ["electric","rock","fire","poison","steel"],
+          Res : ["poison","rock","electric"],
+          tName : "ground"
+        };
+        
+        var flying = {
+          SupEff : ["bug","fighting","grass"],
+          Res : ["bug","fighting","grass","ground"],
+          tName : "flying"
+        };
+        
+        var fire = {
+          SupEff :["grass","bug","steel","ice"],
+          Res : ["bug","fairy","fire","grass","ice","steel"],
+          tName : "fire"
+        };
+        
+        var water = {
+          SupEff :["ground","fire","rock"],
+          Res : ["fire","ice","steel","water"],
+          tName : "water"
+        };
+        
+        var grass = {
+          SupEff :["ground","rock","water"],
+          Res : ["electric","grass","ground","water"],
+          tName : "grass"
+        };
+        
+        var poison = {
+          SupEff :["grass","fairy"],
+          Res : ["fighting","grass","fairy","poison","bug"],
+          tName : "poison"
+        };
+        
+        var electric = {
+          SupEff :["flying","water"],
+          Res : ["electric","flying","steel"],
+          tName : "electric"
+        };
+        
+        var psychic = {
+          SupEff :["poison","fighting"],
+          Res : ["psychic","fighting"],
+          tName : "psychic"
+        };
+        
+        var rock = {
+          SupEff :["bug","fire","flying","ice"],
+          Res : ["fire","flying","normal","poison"],
+          tName : "rock"
+        };
+           
+        var ice = {
+          SupEff :["dragon","flying","grass","ground"],
+          Res : ["ice"],
+          tName : "ice"
+        };
+           
+        var bug = {
+          SupEff :["dark","grass","psychic"],
+          Res : ["fight","grass","ground"],
+          tName : "bug"
+        };
+           
+        var dragon = {
+          SupEff :["dragon"],
+          Res : ["electric","fire","grass","water"],
+          tName : "dragon"
+        };
+         
+        var ghost = {
+          SupEff :["ghost","psychic"],
+          Res : ["bug","poison","normal","fighting"],
+          tName : "ghost"
+        };
+            
+        var dark = {
+          SupEff :["ghost","psychic"],
+          Res : ["dark","ghost","psychic"],
+          tName : "dark"
+        };
+            
+        var steel = {
+          SupEff :["fairy","ice","rock"],
+          Res : ["bug","dragon","fairy","flying","ice","grass","normal","psychic","steel","rock","poison"],
+          tName : "steel"
+        };
+        
+        var fairy = {
+          SupEff :["dark","dragon","fighting"],
+          Res : ["bug","dark","fighting","dragon"],
+          tName : "fairy"
+        };
+        
+        var types = [flying,poison,rock,bug,ghost,steel,fire,water,grass,electric,psychic,ice,dragon,dark,fairy,fighting,ground];
+        
+                /*
+                These are the lists that I'll use to make the functions.
+                Every var has 2 lists inside: one for super effective moves(the first one) and the other one for resistances(the second one).
+                */ 
+            
+        /* So now I'm going to change my initial approach to all of this. Im going to approach the problem by using the list of types and indexOf(). 
+        I'll  make the function check the types and, one per one, take them and put them in the "types" and "not_again" lists by using a normal "for" loop.
+        Also, I don't think I'm doing for-in loops properly. I'll have to check them out more. I'm probably messing up in definitions.
+        
+        Change of plans. I think I'll have to go wuth the really noobie approach. By using pop and push. This language is bullshit.
+        Oh yeah this was all bullshit now it works. I could have been right about it tho. GG
+        */
+        
+        var out = []; //this list will contain the types that are 
+        
+        function shuffle(types) {
+          for (let i = types.length - 1; i > 0; i--) {
+            let j = Math.floor(Math.random() * (i + 1)); // random index from 0 to i
+            [types[i], types[j]] = [types[j], types[i]]; // swap elements
+          }
+        };
+        
+        
+        shuffle(types);
+        //alert("shuffled types = "+types);
+        
+        /* A problem I always encounter is trying to modify an already existing list instead of just creating a new one. 
+        I can solve the issue I have right now: 10.47 02/07/2019 by making a new list instead of trying to modify the already existing one.
+        I think Javascript is made that way. Everytime I try to find in-built functions that try to modify or "go back" in the program, I can't seem 
+        to find one.
+        When you go to Rome, do like the Romans.*/
+        
+        
+        
+        //team.push("ground"); /*this two types must be in every team if we take in consideration the types table for SupEff.*/
+        //team.push("fighting");
+        
+        //alert("r_list before while statement = "+ r_list);
+        
+        while (r_list.length != 0){
+          for (var e in types) {
+            var lenrlist = r_list.length;
+            console.log("team = "+ team);
+            console.log("r_list = "+r_list);
+            console.log("lenrlist = "+lenrlist);
+            var ResList = types[e].Res;
+            console.log("types[e].tName = "+types[e].tName);
+            console.log("ResList = "+ ResList);
+            
+            for (var t in ResList) {
+              var tinResList = ResList[t];
+              //var indexoftinr_list = r_list.indexOf(r_list[tinResList]);
+              console.log("tinResList = "+ tinResList);
+              
+              if (r_list.includes(tinResList) == true) {
+                //console.log("r_list.splice(r_list.indexOf(tinResList),1) = " + r_list.splice(r_list.indexOf(tinResList),1)); PAY ATTENTION this command actually deletes you items in the array EVEN THO YOU THOUGHT IT WAS JUST A MESSAGE ON THE CONSOLE
+                r_list.splice(r_list.indexOf(tinResList),1);
+                console.log("r_list = "+r_list);
+              };
+            };
+            
+            
+            if (lenrlist != r_list.length){
+              team.push(types[e].tName);
+            };
+            
+            console.log("r_list = " + r_list);
+          };
+        };  
+        document.getElementById("teamParagraph").innerHTML = "Team: "+ team;
+        console.log("the end");
+      };
+      
+      function makeATeamSupEffPreGen6() {
+      
+        var r_list = ["fighting","flying","ground","bug","ghost","water","grass","psychic","dragon"];
+        
+        
+        var team = [];
+      
+        var fighting = {
+          SupEff : ["dark","ice","normal","rock","steel"],
+          Res : ["bug","dark","rock"],
+          tName : "fighting"
+        };
+        
+        var ground = {
+          SupEff : ["electric","rock","fire","poison","steel"],
+          Res : ["poison","rock","electric"],
+          tName : "ground"
+        };
+        
+        var flying = {
+          SupEff : ["bug","fighting","grass"],
+          Res : ["bug","fighting","grass","ground"],
+          tName : "flying"
+        };
+        
+        var fire = {
+          SupEff :["grass","bug","steel","ice"],
+          Res : ["bug","fire","grass","ice","steel"],
+          tName : "fire"
+        };
+        
+        var water = {
+          SupEff :["ground","fire","rock"],
+          Res : ["fire","ice","steel","water"],
+          tName : "water"
+        };
+        
+        var grass = {
+          SupEff :["ground","rock","water"],
+          Res : ["electric","grass","ground","water"],
+          tName : "grass"
+        };
+        
+        var poison = {
+          SupEff :["grass"],
+          Res : ["fighting","grass","poison","bug"],
+          tName : "poison"
+        };
+        
+        var electric = {
+          SupEff :["flying","water"],
+          Res : ["electric","flying","steel"],
+          tName : "electric"
+        };
+        
+        var psychic = {
+          SupEff :["poison","fighting"],
+          Res : ["psychic","fighting"],
+          tName : "psychic"
+        };
+        
+        var rock = {
+          SupEff :["bug","fire","flying","ice"],
+          Res : ["fire","flying","normal","poison"],
+          tName : "rock"
+        };
+           
+        var ice = {
+          SupEff :["dragon","flying","grass","ground"],
+          Res : ["ice"],
+          tName : "ice"
+        };
+           
+        var bug = {
+          SupEff :["dark","grass","psychic"],
+          Res : ["fight","grass","ground"],
+          tName : "bug"
+        };
+           
+        var dragon = {
+          SupEff :["dragon"],
+          Res : ["electric","fire","grass","water"],
+          tName : "dragon"
+        };
+         
+        var ghost = {
+          SupEff :["ghost","psychic"],
+          Res : ["bug","poison","normal","fighting"],
+          tName : "ghost"
+        };
+            
+        var dark = {
+          SupEff :["ghost","psychic"],
+          Res : ["dark","ghost","psychic"],
+          tName : "dark"
+        };
+            
+        var steel = {
+          SupEff :["ice","rock"],
+          Res : ["bug","dragon","flying","ice","grass","normal","psychic","steel","rock","poison"],
+          tName : "steel"
+        };
+        
+        var typesPreGen6 = [flying,poison,rock,bug,ghost,steel,fire,water,grass,electric,psychic,ice,dragon,dark];
+        
+                /*
+                These are the lists that I'll use to make the functions.
+                Every var has 2 lists inside: one for super effective moves(the first one) and the other one for resistances(the second one).
+                */ 
+            
+        /* So now I'm going to change my initial approach to all of this. Im going to approach the problem by using the list of types and indexOf(). 
+        I'll  make the function check the types and, one per one, take them and put them in the "types" and "not_again" lists by using a normal "for" loop.
+        Also, I don't think I'm doing for-in loops properly. I'll have to check them out more. I'm probably messing up in definitions.
+        
+        Change of plans. I think I'll have to go wuth the really noobie approach. By using pop and push. This language is bullshit.
+        */
+        
+        var out = []; //this list will contain the types that are 
+        
+        function shuffle(typesPreGen6) {
+          for (let i = typesPreGen6.length - 1; i > 0; i--) {
+            let j = Math.floor(Math.random() * (i + 1)); // random index from 0 to i
+            [typesPreGen6[i], typesPreGen6[j]] = [typesPreGen6[j], typesPreGen6[i]]; // swap elements
+          }
+        };
+        
+        
+        shuffle(typesPreGen6);
+        //alert("shuffled types = "+types);
+        
+        /* A problem I always encounter is trying to modify an already existing list instead of just creating a new one. 
+        I can solve the issue I have right now: 10.47 02/07/2019 by making a new list instead of trying to modify the already existing one.
+        I think Javascript is made that way. Everytime I try to find in-built functions that try to modify or "go back" in the program, I can't seem 
+        to find one.
+        When you go to Rome, do like the Romans.*/
+        
+        
+        
+        team.push("ground"); /*this two types must be in every team if we take in consideration the types table for SupEff.*/
+        team.push("fighting");
+        
+        //alert("r_list before while statement = "+ r_list);
+        
+        while (r_list.length != 0){
+          for (var e in typesPreGen6) {
+            var lenrlist = r_list.length;
+            console.log("team = "+ team);
+            console.log("r_list = "+r_list);
+            console.log("lenrlist = "+lenrlist);
+            var SupEffList = typesPreGen6[e].SupEff;
+            console.log("typesPreGen6[e].tName = "+typesPreGen6[e].tName);
+            console.log("SupEffList = "+SupEffList);
+            
+            for (var t in SupEffList) {
+              var tinSupEffList = SupEffList[t];
+              //var indexoftinr_list = r_list.indexOf(r_list[tinSupEffList]);
+              console.log("tinSupEffList = "+ tinSupEffList);
+              
+              if (r_list.includes(tinSupEffList) == true) {
+                //console.log("r_list.splice(r_list.indexOf(tinSupEffList),1) = " + r_list.splice(r_list.indexOf(tinSupEffList),1)); PAY ATTENTION this command actually deletes you items in the array EVEN THO YOU THOUGHT IT WAS JUST A MESSAGE ON THE CONSOLE
+                r_list.splice(r_list.indexOf(tinSupEffList),1);
+                console.log("r_list = "+r_list);
+              };
+            };
+            
+            
+            if (lenrlist != r_list.length){
+              team.push(typesPreGen6[e].tName);
+            };
+            
+            console.log("r_list = " + r_list);
+          };
+        };  
+        document.getElementById("teamParagraph").innerHTML = "Team: "+ team;
+        console.log("the end");
+      };
+      
+      function makeATeamResPreGen6() {
+      
+        var r_list = ["fighting","flying","poison","ground","rock","bug","ghost","steel","fire","water","grass","electric","psychic","ice","dragon","dark","normal"];
+        
+        
+        var team = [];
+      
+        var fighting = {
+          SupEff : ["dark","ice","normal","rock","steel"],
+          Res : ["bug","dark","rock"],
+          tName : "fighting"
+        };
+        
+        var ground = {
+          SupEff : ["electric","rock","fire","poison","steel"],
+          Res : ["poison","rock","electric"],
+          tName : "ground"
+        };
+        
+        var flying = {
+          SupEff : ["bug","fighting","grass"],
+          Res : ["bug","fighting","grass","ground"],
+          tName : "flying"
+        };
+        
+        var fire = {
+          SupEff :["grass","bug","steel","ice"],
+          Res : ["bug","fire","grass","ice","steel"],
+          tName : "fire"
+        };
+        
+        var water = {
+          SupEff :["ground","fire","rock"],
+          Res : ["fire","ice","steel","water"],
+          tName : "water"
+        };
+        
+        var grass = {
+          SupEff :["ground","rock","water"],
+          Res : ["electric","grass","ground","water"],
+          tName : "grass"
+        };
+        
+        var poison = {
+          SupEff :["grass"],
+          Res : ["fighting","grass","poison","bug"],
+          tName : "poison"
+        };
+        
+        var electric = {
+          SupEff :["flying","water"],
+          Res : ["electric","flying","steel"],
+          tName : "electric"
+        };
+        
+        var psychic = {
+          SupEff :["poison","fighting"],
+          Res : ["psychic","fighting"],
+          tName : "psychic"
+        };
+        
+        var rock = {
+          SupEff :["bug","fire","flying","ice"],
+          Res : ["fire","flying","normal","poison"],
+          tName : "rock"
+        };
+           
+        var ice = {
+          SupEff :["dragon","flying","grass","ground"],
+          Res : ["ice"],
+          tName : "ice"
+        };
+           
+        var bug = {
+          SupEff :["dark","grass","psychic"],
+          Res : ["fight","grass","ground"],
+          tName : "bug"
+        };
+           
+        var dragon = {
+          SupEff :["dragon"],
+          Res : ["electric","fire","grass","water"],
+          tName : "dragon"
+        };
+         
+        var ghost = {
+          SupEff :["ghost","psychic"],
+          Res : ["bug","poison","normal","fighting"],
+          tName : "ghost"
+        };
+            
+        var dark = {
+          SupEff :["ghost","psychic"],
+          Res : ["dark","ghost","psychic"],
+          tName : "dark"
+        };
+            
+        var steel = {
+          SupEff :["ice","rock"],
+          Res : ["bug","dragon","flying","ice","grass","normal","psychic","steel","rock","poison"],
+          tName : "steel"
+        };
+        
+        var typesPreGen6 = [flying,poison,rock,bug,ghost,steel,fire,water,grass,electric,psychic,ice,dragon,dark,fighting,ground];
+        
+                /*
+                These are the lists that I'll use to make the functions.
+                Every var has 2 lists inside: one for super effective moves(the first one) and the other one for resistances(the second one).
+                */ 
+            
+        /* So now I'm going to change my initial approach to all of this. Im going to approach the problem by using the list of types and indexOf(). 
+        I'll  make the function check the types and, one per one, take them and put them in the "types" and "not_again" lists by using a normal "for" loop.
+        Also, I don't think I'm doing for-in loops properly. I'll have to check them out more. I'm probably messing up in definitions.
+        
+        Change of plans. I think I'll have to go wuth the really noobie approach. By using pop and push. This language is bullshit.
+        Oh yeah this was all bullshit now it works. I could have been right about it tho. GG
+        */
+        
+        var out = []; //this list will contain the types that are 
+        
+        function shuffle(typesPreGen6) {
+          for (let i = typesPreGen6.length - 1; i > 0; i--) {
+            let j = Math.floor(Math.random() * (i + 1)); // random index from 0 to i
+            [typesPreGen6[i], typesPreGen6[j]] = [typesPreGen6[j], typesPreGen6[i]]; // swap elements
+          }
+        };
+        
+        
+        shuffle(typesPreGen6);
+        //alert("shuffled types = "+types);
+        
+        /* A problem I always encounter is trying to modify an already existing list instead of just creating a new one. 
+        I can solve the issue I have right now: 10.47 02/07/2019 by making a new list instead of trying to modify the already existing one.
+        I think Javascript is made that way. Everytime I try to find in-built functions that try to modify or "go back" in the program, I can't seem 
+        to find one.
+        When you go to Rome, do like the Romans.*/
+        
+        
+        
+        //team.push("ground"); /*this two types must be in every team if we take in consideration the types table for SupEff.*/
+        //team.push("fighting");
+        
+        alert("r_list before while statement = "+ r_list);
+        
+        while (r_list.length != 0){
+          for (var e in typesPreGen6) {
+            var lenrlist = r_list.length;
+            console.log("team = "+ team);
+            console.log("r_list = "+r_list);
+            console.log("lenrlist = "+lenrlist);
+            var ResList = typesPreGen6[e].Res;
+            console.log("typesPreGen6[e].tName = "+typesPreGen6[e].tName);
+            console.log("ResList = "+ ResList);
+            
+            for (var t in ResList) {
+              var tinResList = ResList[t];
+              //var indexoftinr_list = r_list.indexOf(r_list[tinResList]);
+              console.log("tinResList = "+ tinResList);
+              
+              if (r_list.includes(tinResList) == true) {
+                //console.log("r_list.splice(r_list.indexOf(tinResList),1) = " + r_list.splice(r_list.indexOf(tinResList),1)); PAY ATTENTION this command actually deletes you items in the array EVEN THO YOU THOUGHT IT WAS JUST A MESSAGE ON THE CONSOLE
+                r_list.splice(r_list.indexOf(tinResList),1);
+                console.log("r_list = "+r_list);
+              };
+            };
+            
+            
+            if (lenrlist != r_list.length){
+              //team.push(types[e].tName);
+            };
+            
+            console.log("r_list = " + r_list);
+          };
+        };  
+        document.getElementById("teamParagraph").innerHTML = "Team: "+ team;
+        console.log("the end");
+      };
+      
+    </script>
+    
+  </body>
+</html>
